@@ -16,23 +16,11 @@ const main = async () => {
   const amountETHDesired = ethers.parseEther("0.2");
   const deadline = Math.floor(Date.now() / 1000) + 300;
 
-  const USDC = await ethers.getContractAt(
-    "IERC20",
-    USDCAddress,
-    impersonatedSigner
-  );
+  const USDC = await ethers.getContractAt("IERC20", USDCAddress, impersonatedSigner);
 
-  const LPToken = await ethers.getContractAt(
-    "IERC20",
-    USDCWETHPairAddress,
-    impersonatedSigner
-  );
+  const LPToken = await ethers.getContractAt("IERC20", USDCWETHPairAddress, impersonatedSigner);
 
-  const ROUTER = await ethers.getContractAt(
-    "IUniswapV2Router",
-    UNIRouter,
-    impersonatedSigner
-  );
+  const ROUTER = await ethers.getContractAt("IUniswapV2Router", UNIRouter, impersonatedSigner );
 
   await USDC.approve(UNIRouter, amountTokenDesired);
 
@@ -62,21 +50,10 @@ const main = async () => {
     impersonatedSigner.address
   );
 
-  console.log(
-    "=================Before========================================"
-  );
-  console.log(
-    "USDC Balance before removing liquidity:",
-    ethers.formatUnits(usdcBalBefore, 18)
-  );
-  console.log(
-    "ETH Balance before removing liquidity:",
-    ethers.formatEther(ethBalBefore)
-  );
-  console.log(
-    "LP Token Balance before removing liquidity:",
-    ethers.formatUnits(lpBalBefore, 18)
-  );
+  console.log("-------------- Before -------------------");
+  console.log("USDC Balance before removing liquidity:", ethers.formatUnits(usdcBalBefore, 18));
+  console.log("ETH Balance before removing liquidity:", ethers.formatEther(ethBalBefore));
+  console.log("LP Token Balance before removing liquidity:", ethers.formatUnits(lpBalBefore, 18));
 
   const removeLiquidityTx = await ROUTER.removeLiquidityETH(
     USDCAddress,
@@ -94,7 +71,7 @@ const main = async () => {
   );
   const lpBalAfter = await LPToken.balanceOf(impersonatedSigner.address);
 
-  console.log("=================After========================================");
+  console.log("------------------ After LP ------------------");
   console.log(
     "USDC Balance after removing liquidity:",
     ethers.formatUnits(usdcBalAfter, 18)
@@ -103,12 +80,9 @@ const main = async () => {
     "ETH Balance after removing liquidity:",
     ethers.formatEther(ethBalAfter)
   );
-  console.log(
-    "LP Token Balance after removing liquidity:",
-    ethers.formatUnits(lpBalAfter, 18)
-  );
+  console.log( "LP Token Balance after removing liquidity:", ethers.formatUnits(lpBalAfter, 18));
   console.log("Liquidity removed successfully!");
-  console.log("=========================================================");
+  console.log("-------------- Difference -----------------");
 
   const usdcReceived = usdcBalAfter - usdcBalBefore;
   const ethReceived = ethBalAfter - ethBalBefore;
