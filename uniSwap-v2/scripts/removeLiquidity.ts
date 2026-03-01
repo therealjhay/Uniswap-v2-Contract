@@ -17,29 +17,13 @@ const main = async () => {
   const amountDAIMin = ethers.parseUnits("9000", 18);
   const deadline = Math.floor(Date.now() / 1000) + 300;
 
-  const USDC = await ethers.getContractAt(
-    "IERC20",
-    USDCAddress,
-    impersonatedSigner
-  );
+  const USDC = await ethers.getContractAt( "IERC20", USDCAddress, impersonatedSigner);
 
-  const DAI = await ethers.getContractAt(
-    "IERC20",
-    DAIAddress,
-    impersonatedSigner
-  );
+  const DAI = await ethers.getContractAt( "IERC20", DAIAddress, impersonatedSigner);
 
-  const LPToken = await ethers.getContractAt(
-    "IERC20",
-    USDCDAIPairAddress,
-    impersonatedSigner
-  );
+  const LPToken = await ethers.getContractAt( "IERC20", USDCDAIPairAddress, impersonatedSigner);
 
-  const ROUTER = await ethers.getContractAt(
-    "IUniswapV2Router",
-    UNIRouter,
-    impersonatedSigner
-  );
+  const ROUTER = await ethers.getContractAt( "IUniswapV2Router", UNIRouter, impersonatedSigner);
 
   await USDC.approve(UNIRouter, amountUSDC);
   await DAI.approve(UNIRouter, amountDAI);
@@ -56,7 +40,7 @@ const main = async () => {
   );
   await addLiquidityTx.wait();
 
-  console.log("Liquidity added. LP tokens acquired.");
+  console.log("Liquidity added. LP tokens recieved.");
 
   const lpBalBefore = await LPToken.balanceOf(impersonatedSigner.address);
   const liquidityToRemove = lpBalBefore / BigInt(2);
@@ -69,21 +53,10 @@ const main = async () => {
   const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
   const daiBalBefore = await DAI.balanceOf(impersonatedSigner.address);
 
-  console.log(
-    "=================Before========================================"
-  );
-  console.log(
-    "USDC Balance before removing liquidity:",
-    ethers.formatUnits(usdcBalBefore, 6)
-  );
-  console.log(
-    "DAI Balance before removing liquidity:",
-    ethers.formatUnits(daiBalBefore, 18)
-  );
-  console.log(
-    "LP Token Balance before removing liquidity:",
-    ethers.formatUnits(lpBalBefore, 18)
-  );
+  console.log("----------------- Before LP -------------------");
+  console.log("USDC Bal bfr removing liquidity:", ethers.formatUnits(usdcBalBefore, 6));
+  console.log("DAI Bal bfr removing liquidity:", ethers.formatUnits(daiBalBefore, 18));
+  console.log("LP Token Bal before removing liquidity:", ethers.formatUnits(lpBalBefore, 18));
 
   const removeLiquidityTx = await ROUTER.removeLiquidity(
     USDCAddress,
@@ -100,21 +73,12 @@ const main = async () => {
   const daiBalAfter = await DAI.balanceOf(impersonatedSigner.address);
   const lpBalAfter = await LPToken.balanceOf(impersonatedSigner.address);
 
-  console.log("=================After========================================");
-  console.log(
-    "USDC Balance after removing liquidity:",
-    ethers.formatUnits(usdcBalAfter, 6)
-  );
-  console.log(
-    "DAI Balance after removing liquidity:",
-    ethers.formatUnits(daiBalAfter, 18)
-  );
-  console.log(
-    "LP Token Balance after removing liquidity:",
-    ethers.formatUnits(lpBalAfter, 18)
-  );
+  console.log("----------------------- After LP -------------------------");
+  console.log("USDC Balance after removing liquidity:", ethers.formatUnits(usdcBalAfter, 6));
+  console.log("DAI Balance after removing liquidity:", ethers.formatUnits(daiBalAfter, 18));
+  console.log("LP Token Balance after removing liquidity:", ethers.formatUnits(lpBalAfter, 18));
   console.log("Liquidity removed successfully!");
-  console.log("=========================================================");
+  console.log("-----------------------------Difference -----------------------");
 
   const usdcReceived = usdcBalAfter - usdcBalBefore;
   const daiReceived = daiBalAfter - daiBalBefore;
