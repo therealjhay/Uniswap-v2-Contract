@@ -16,21 +16,11 @@ const main = async () => {
   const amountDAIMin = ethers.parseUnits("9000", 18);
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
-  const USDC = await ethers.getContractAt(
-    "IERC20",
-    USDCAddress,
-    impersonatedSigner
-  );
-  const DAI = await ethers.getContractAt(
-    "IERC20",
-    DAIAddress,
-    impersonatedSigner
-  );
-  const ROUTER = await ethers.getContractAt(
-    "IUniswapV2Router",
-    UNIRouter,
-    impersonatedSigner
-  );
+  const USDC = await ethers.getContractAt( "IERC20", USDCAddress, impersonatedSigner );
+
+  const DAI = await ethers.getContractAt( "IERC20", DAIAddress, impersonatedSigner );
+
+  const ROUTER = await ethers.getContractAt( "IUniswapV2Router", UNIRouter, impersonatedSigner );
 
   await USDC.approve(UNIRouter, amountUSDC);
   await DAI.approve(UNIRouter, amountDAI);
@@ -38,7 +28,7 @@ const main = async () => {
   const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
   const daiBalBefore = await DAI.balanceOf(impersonatedSigner.address);
   console.log(
-    "=================Before========================================"
+    "-------------------- Before Swap --------------------------"
   );
 
   console.log("USDC Balance before adding liquidity:", Number(usdcBalBefore));
@@ -59,12 +49,12 @@ const main = async () => {
 
   const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
   const daiBalAfter = await DAI.balanceOf(impersonatedSigner.address);
-  console.log("=================After========================================");
+  console.log("---------------- After Swap_------------------");
   console.log("USDC Balance after adding liquidity:", Number(usdcBalAfter));
   console.log("DAI Balance after adding liquidity:", Number(daiBalAfter));
 
   console.log("Liquidity added successfully!");
-  console.log("=========================================================");
+  console.log("----------------- Difference ---------------");
   const usdcUsed = usdcBalBefore - usdcBalAfter;
   const daiUsed = daiBalBefore - daiBalAfter;
 

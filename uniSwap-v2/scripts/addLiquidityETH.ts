@@ -16,36 +16,18 @@ const main = async () => {
   const amountETHDesired = ethers.parseEther("0.2");
   const deadline = Math.floor(Date.now() / 1000) + 300;
 
-  const USDC = await ethers.getContractAt(
-    "IERC20",
-    USDCAddress,
-    impersonatedSigner
-  );
+  const USDC = await ethers.getContractAt( "IERC20", USDCAddress, impersonatedSigner );
 
-  const ROUTER = await ethers.getContractAt(
-    "IUniswapV2Router",
-    UNIRouter,
-    impersonatedSigner
-  );
+  const ROUTER = await ethers.getContractAt( "IUniswapV2Router", UNIRouter, impersonatedSigner );
 
   await USDC.approve(UNIRouter, amountTokenDesired);
 
   const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
-  const ethBalBefore = await ethers.provider.getBalance(
-    impersonatedSigner.address
-  );
+  const ethBalBefore = await ethers.provider.getBalance(impersonatedSigner.address);
 
-  console.log(
-    "=================Before========================================"
-  );
-  console.log(
-    "USDC Balance before adding liquidity:",
-    ethers.formatUnits(usdcBalBefore, 18)
-  );
-  console.log(
-    "ETH Balance before adding liquidity:",
-    ethers.formatEther(ethBalBefore)
-  );
+  console.log("----------------- Before Swap ---------------------");
+  console.log( "USDC Bal bfr liquidity:", ethers.formatUnits(usdcBalBefore, 18));
+  console.log( "ETH Bal bfr liquidity:", ethers.formatEther(ethBalBefore) );
 
   const addLiquidityTx = await ROUTER.addLiquidityETH(
     USDCAddress,
@@ -63,17 +45,11 @@ const main = async () => {
     impersonatedSigner.address
   );
 
-  console.log("=================After========================================");
-  console.log(
-    "USDC Balance after adding liquidity:",
-    ethers.formatUnits(usdcBalAfter, 18)
-  );
-  console.log(
-    "ETH Balance after adding liquidity:",
-    ethers.formatEther(ethBalAfter)
-  );
+  console.log("-------------------- After Swap -----------------------");
+  console.log("USDC Balance after adding liquidity:", ethers.formatUnits(usdcBalAfter, 18));
+  console.log("ETH Balance after adding liquidity:", ethers.formatEther(ethBalAfter));
   console.log("Liquidity added successfully!");
-  console.log("=========================================================");
+  console.log("----------------- Difference ------------------------");
 
   const usdcUsed = usdcBalBefore - usdcBalAfter;
   const ethUsed = ethBalBefore - ethBalAfter;

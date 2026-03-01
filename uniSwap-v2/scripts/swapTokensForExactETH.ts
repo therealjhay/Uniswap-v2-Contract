@@ -33,7 +33,7 @@ const main = async () => {
     impersonatedSigner.address
   );
 
-  console.log("=================Before======================================");
+  console.log("---------------Before --------------------");
 
   console.log(
     "USDC Balance before swapping:",
@@ -59,7 +59,7 @@ const main = async () => {
     impersonatedSigner.address
   );
 
-  console.log("=================After========================================");
+  console.log("------------- After --------------------");
 
   console.log(
     "USDC Balance after swapping:",
@@ -71,7 +71,7 @@ const main = async () => {
   const newEthBal = ethBalAfter - ethBalBefore;
 
   console.log(
-    "=================Differences========================================"
+    "----------------- Differences ----------------------"
   );
 
   console.log("USDC USED: ", ethers.formatUnits(usdcUsed, 6));
