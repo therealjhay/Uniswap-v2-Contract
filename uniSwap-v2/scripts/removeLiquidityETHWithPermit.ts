@@ -7,9 +7,6 @@ const main = async () => {
   const USDCWETHPairAddress = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc";
   const USDCHolder = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621";
 
-  // Use a real Hardhat signer — impersonated accounts have no private key
-  // and cannot call signTypedData. We use deployer (Hardhat account #0) as
-  // the permit signer and fund it with USDC via the impersonated holder.
   const [deployer] = await ethers.getSigners();
 
   await helpers.impersonateAccount(USDCHolder);
@@ -136,7 +133,7 @@ const main = async () => {
   const ethBalAfter = await ethers.provider.getBalance(deployer.address);
   const lpBalAfter = await LPToken.balanceOf(deployer.address);
 
-  console.log("=================After========================================");
+  console.log(" -------------------- After -----------------------");
   console.log(
     "USDC Balance after removing liquidity:",
     ethers.formatUnits(usdcBalAfter, 6)

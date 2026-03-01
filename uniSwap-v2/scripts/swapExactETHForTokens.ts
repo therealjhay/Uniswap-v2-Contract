@@ -13,32 +13,17 @@ const main = async () => {
   const amountOutMin = ethers.parseUnits("199", 6);
   const deadline = Math.floor(Date.now() / 1000) + 300;
 
-  const USDC = await ethers.getContractAt(
-    "IERC20",
-    USDCAddress,
-    impersonatedSigner
-  );
+  const USDC = await ethers.getContractAt("IERC20", USDCAddress, impersonatedSigner);
 
-  const V2_ROUTER = await ethers.getContractAt(
-    "IUniswapV2Router",
-    UNIRouter,
-    impersonatedSigner
-  );
+  const V2_ROUTER = await ethers.getContractAt("IUniswapV2Router", UNIRouter, impersonatedSigner);
 
-  const ethBalBefore = await ethers.provider.getBalance(
-    impersonatedSigner.address
-  );
+  const ethBalBefore = await ethers.provider.getBalance(impersonatedSigner.address);
   const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
 
-  console.log("=================Before======================================");
+  console.log("-------------- Before Swap ----------------------");
 
-  console.log(
-    "WETH Balance before swapping:",
-    ethers.formatEther(ethBalBefore)
-  );
-  console.log(
-    "USDC Balance before swapping:",
-    ethers.formatUnits(usdcBalBefore, 6)
+  console.log("WETH Balance before swap:", ethers.formatEther(ethBalBefore));
+  console.log("USDC Balance before swap:", ethers.formatUnits(usdcBalBefore, 6)
   );
 
   const txn = await V2_ROUTER.swapExactETHForTokens(
@@ -58,7 +43,7 @@ const main = async () => {
   );
   const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
 
-  console.log("=================After========================================");
+  console.log("------------------- After Swap -----------------------");
 
   console.log("WETH Balance after swapping:", ethers.formatEther(ethBalAfter));
   console.log(
@@ -69,9 +54,7 @@ const main = async () => {
   const newEthBal = ethBalBefore - ethBalAfter;
   const usdcUsed = usdcBalAfter - usdcBalBefore;
 
-  console.log(
-    "=================Differences========================================"
-  );
+  console.log("------------------ Differences --------------------------");
 
   console.log("ETH USED: ", ethers.formatEther(newEthBal));
   console.log("NEW USDC BALANCE: ", ethers.formatUnits(usdcUsed, 6));

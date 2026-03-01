@@ -37,7 +37,7 @@ const main = async () => {
   const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
   const daiBalBefore = await DAI.balanceOf(impersonatedSigner.address);
 
-  console.log("=================Before======================================");
+  console.log("----------------- Before Swap -------------------------");
 
   console.log(
     "USDC Balance before swapping:",
@@ -61,7 +61,7 @@ const main = async () => {
   const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
   const daiBalAfter = await DAI.balanceOf(impersonatedSigner.address);
 
-  console.log("=================After========================================");
+  console.log("----------------- After Swap -------------------------");
 
   console.log(
     "USDC Balance after swapping:",
@@ -75,10 +75,7 @@ const main = async () => {
   const usdcUsed = usdcBalBefore - usdcBalAfter;
   const newDaiVal = daiBalAfter - daiBalBefore;
 
-  console.log(
-    "=================Differences========================================"
-  );
-
+  console.log("----------------- Difference -------------------------");
   console.log("USDC USED: ", ethers.formatUnits(usdcUsed, 6));
   console.log("NEW DAI BALANCE: ", ethers.formatUnits(newDaiVal, 18));
 };

@@ -1,4 +1,3 @@
-
 const helpers = require("@nomicfoundation/hardhat-network-helpers");
 import { ethers } from "hardhat";
 
@@ -11,17 +10,9 @@ const main = async () => {
   await helpers.impersonateAccount(TokenHolder);
   const impersonatedSigner = await ethers.getSigner(TokenHolder);
 
-  const USDC = await ethers.getContractAt(
-    "IERC20",
-    USDCAddress,
-    impersonatedSigner
-  );
+  const USDC = await ethers.getContractAt("IERC20", USDCAddress, impersonatedSigner);
 
-  const UniRouterContract = await ethers.getContractAt(
-    "IUniswapV2Router",
-    UNIRouter,
-    impersonatedSigner
-  );
+  const UniRouterContract = await ethers.getContractAt("IUniswapV2Router", UNIRouter, impersonatedSigner);
 
   const amountOut = ethers.parseUnits("1000", 6);
 
@@ -29,13 +20,13 @@ const main = async () => {
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
-  const usdcBalanceBefore = await USDC.balanceOf(impersonatedSigner.a);
+  const usdcBalanceBefore = await USDC.balanceOf(impersonatedSigner);
 
   const wethBalanceBefore = await ethers.provider.getBalance(
     impersonatedSigner
   );
 
-  console.log("=======Before============");
+  console.log("------------------ Before Swap -------------------");
 
   console.log("weth balance before", Number(wethBalanceBefore));
   console.log("usdc balance before", Number(usdcBalanceBefore));
@@ -52,13 +43,13 @@ const main = async () => {
 
   await transaction.wait();
 
-  console.log("=======After============");
+  console.log("------------------- After Swap -----------------------");
   const usdcBalanceAfter = await USDC.balanceOf(impersonatedSigner);
   const wethBalanceAfter = await ethers.provider.getBalance(impersonatedSigner);
   console.log("weth balance after", Number(wethBalanceAfter));
   console.log("usdc balance after", Number(usdcBalanceAfter));
 
-  console.log("=========Difference==========");
+  console.log("------------------ Difference --------------------");
   const newUsdcValue = Number(usdcBalanceAfter - usdcBalanceBefore);
   const newWethValue = wethBalanceBefore - wethBalanceAfter;
   console.log("NEW USDC BALANCE: ", ethers.formatUnits(newUsdcValue, 6));
